@@ -1,0 +1,152 @@
+module ATM_Machine (
+  input wire clk,
+  input wire reset,
+  input wire [3:0] keypad,
+  input wire [3:0] card_swipe,
+  input wire [3:0] withdrawal_amount,
+  input wire [3:0] deposit_amount,
+  output reg [7:0] display,
+  output reg locked,
+  output reg [7:0] mini_statement
+);
+
+  // Internal registers and variables
+  reg [3:0] pin;
+  reg [3:0] attempt_count;
+  reg [7:0] balance;
+  reg [7:0] old_balance;
+  reg [7:0] new_balance;
+  reg [7:0] transaction_amount;
+  reg [7:0] transaction_counter;
+  reg [7:0] recent_transactions [15:0];
+  reg [7:0] withdrawal_limit;
+  reg [7:0] deposit_limit;
+  reg [1:0] state;
+  reg [3:0] lock_counter;
+
+  // Constants
+  parameter IDLE_STATE = 2'b00;
+  parameter PIN_ENTRY_STATE = 2'b01;
+  parameter TRANSACTION_STATE = 2'b10;
+  parameter LOCKED_STATE = 2'b11;
+  parameter MAX_ATTEMPTS = 4'd4;
+  parameter LOCK_DURATION = 24;
+  parameter WITHDRAWAL_LIMIT = 8'd100;
+  parameter DEPOSIT_LIMIT = 8'd500;
+
+  always @(posedge clk) begin
+    if (reset) begin
+      state <= IDLE_STATE;
+      locked <= 0;
+      display <= 8'b00000000;
+      pin <= 4'd0;
+      attempt_count <= 4'd0;
+      balance <= 8'b10000000;
+      old_balance <= 8'b00000000;
+      new_balance <= 8'b00000000;
+      transaction_amount <= 8'b00000000;
+      transaction_counter <= 8'b00000000;
+      withdrawal_limit <= WITHDRAWAL_LIMIT;
+      deposit_limit <= DEPOSIT_LIMIT;
+      lock_counter <= 4'd0;
+      mini_statement <= 8'b00000000;
+    end
+    else begin
+      case (state)
+        IDLE_STATE: begin
+          display <= 8'b00000000;
+          if (card_swipe != 4'd0) begin
+            state <= PIN_ENTRY_STATE;
+          end
+        end
+
+        PIN_ENTRY_STATE: begin
+          display <= 8'b00000000;
+          if (keypad != 4'd0) begin
+            if (attempt_count < MAX_ATTEMPTS) begin
+              pin <= keypad;
+              attempt_count <= attempt_count + 1;
+              display <= 8'b00000001; // Invalid PIN
+            end
+            else begin
+              locked <= 1;
+              lock_counter <= LOCK_DURATION;
+              state <= LOCKED_STATE;
+            end
+          end
+          else if (keypad == 4'd0) begin
+            if (pin == 4'd4) begin
+              state <= TRANSACTION_STATE;
+            end
+            else begin
+              attempt_count <= attempt_count + 1;
+              display <= 8'b00000001; // Invalid PIN
+              if (attempt_count == MAX_ATTEMPTS) begin
+                locked <= 1;
+                lock_counter <= LOCK_DURATION;
+                state <= LOCKED_STATE;
+              end
+            end
+          end
+        end
+
+        TRANSACTION_STATE: begin
+          display <= 8'b00000000;
+          if (withdrawal_amount != 4'd0) begin
+            if (withdrawal_amount <= withdrawal_limit && withdrawal_amount <= balance) begin
+              old_balance <= balance;
+              balance <= balance - withdrawal_amount;
+              new_balance <= balance;
+              withdrawal_limit <= withdrawal_limit - withdrawal_amount;
+              transaction_amount <= withdrawal_amount;
+              transaction_counter <= transaction_counter + 1;
+              recent_transactions[transaction_counter] <= transaction_amount;
+              display <= new_balance;
+            end
+            else begin
+              display <= 8'b00000010; // Invalid withdrawal amount
+            end
+          end
+          else if (deposit_amount != 4'd0) begin
+            if (deposit_amount <= deposit_limit) begin
+              old_balance <= balance;
+              balance <= balance + deposit_amount;
+              new_balance <= balance;
+              deposit_limit <= deposit_limit - deposit_amount;
+              transaction_amount <= deposit_amount;
+              transaction_counter <= transaction_counter + 1;
+              recent_transactions[transaction_counter] <= transaction_amount;
+              display <= new_balance;
+            end
+            else begin
+              display <= 8'b00000011; // Invalid deposit amount
+            end
+          end
+          else if (keypad == 4'd15) begin
+            state <= IDLE_STATE;
+          end
+          else if (keypad == 4'd14) begin
+            state <= IDLE_STATE;
+            display <= old_balance;
+          end
+          else if (keypad == 4'd13) begin
+            state <= IDLE_STATE;
+            mini_statement <= recent_transactions[transaction_counter];
+          end
+        end
+
+        LOCKED_STATE: begin
+          display <= 8'b00000000;
+          if (lock_counter > 0) begin
+            lock_counter <= lock_counter - 1;
+            display <= 8'b00000010; // Account locked
+          end
+          else begin
+            locked <= 0;
+            state <= IDLE_STATE;
+          end
+        end
+      endcase
+    end
+  end
+endmodule

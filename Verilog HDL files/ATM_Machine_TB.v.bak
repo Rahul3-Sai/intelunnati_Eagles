@@ -1,0 +1,110 @@
+module ATM_Machine_TB;
+  
+  reg clk;
+  reg reset;
+  reg [3:0] keypad;
+  reg [3:0] card_swipe;
+  reg [3:0] withdrawal_amount;
+  reg [3:0] deposit_amount;
+  
+  wire [7:0] display;
+  wire locked;
+  wire [7:0] mini_statement;
+  
+  ATM_Machine dut (
+    .clk(clk),
+    .reset(reset),
+    .keypad(keypad),
+    .card_swipe(card_swipe),
+    .withdrawal_amount(withdrawal_amount),
+    .deposit_amount(deposit_amount),
+    .display(display),
+    .locked(locked),
+    .mini_statement(mini_statement)
+  );
+  
+  initial begin
+    $dumpfile("ATM_Machine_TB.vcd");
+    $dumpvars(0, ATM_Machine_TB);
+    
+    clk = 0;
+    reset = 1;
+    keypad = 4'b0000;
+    card_swipe = 4'b0000;
+    withdrawal_amount = 4'b0000;
+    deposit_amount = 4'b0000;
+    
+    #10 reset = 0;
+    
+    // Test case 1: Valid PIN entry and withdrawal
+    keypad = 4'b0000;
+    card_swipe = 4'b1111; // Trigger PIN_ENTRY_STATE
+    #10;
+    keypad = 4'b0001; // Enter PIN 1
+    #10;
+    keypad = 4'b0010; // Enter PIN 2
+    #10;
+    keypad = 4'b0011; // Enter PIN 3
+    #10;
+    keypad = 4'b0100; // Enter PIN 4 (valid PIN)
+    #10;
+    withdrawal_amount = 4'b0110; // Withdraw $6
+    #10;
+    
+    // Test case 2: Invalid PIN entry (exceeding attempts) and deposit
+    card_swipe = 4'b1111; // Trigger PIN_ENTRY_STATE
+    #10;
+    keypad = 4'b0001; // Enter PIN 1 (invalid PIN)
+    #10;
+    keypad = 4'b0010; // Enter PIN 2 (invalid PIN)
+    #10;
+    keypad = 4'b0011; // Enter PIN 3 (invalid PIN)
+    #10;
+    keypad = 4'b0100; // Enter PIN 4 (invalid PIN)
+    #10;
+    deposit_amount = 4'b0100; // Deposit $4 (should not be processed due to lock)
+    #10;
+    
+    // Test case 3: Account locked
+    card_swipe = 4'b1111; // Trigger PIN_ENTRY_STATE
+    #10;
+    keypad = 4'b0001; // Enter PIN 1 (invalid PIN)
+    #10;
+    keypad = 4'b0010; // Enter PIN 2 (invalid PIN)
+    #10;
+    keypad = 4'b0011; // Enter PIN 3 (invalid PIN)
+    #10;
+    keypad = 4'b0100; // Enter PIN 4 (invalid PIN)
+    #10;
+    
+    // Wait for 24 hours (lock duration)
+    #240;
+    
+    // Test case 4: Valid PIN entry after lock
+    card_swipe = 4'b1111; // Trigger PIN_ENTRY_STATE
+    #10;
+    keypad = 4'b0001; // Enter PIN 1
+    #10;
+    keypad = 4'b0010; // Enter PIN 2
+    #10;
+    keypad = 4'b0011; // Enter PIN 3
+    #10;
+    keypad = 4'b0100; // Enter PIN 4 (valid PIN)
+    #10;
+    withdrawal_amount = 4'b0010; // Withdraw $2
+    #10;
+    
+    // Test case 5: Display old balance and mini statement
+    keypad = 4'b1110; // Trigger display of old balance
+    #10;
+    keypad = 4'b1101; // Trigger display of mini statement
+    #10;
+    
+    $finish;
+  end
+  
+  always begin
+    #5 clk = ~clk;
+  end
+  
+endmodule
