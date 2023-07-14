@@ -1,0 +1,149 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "display[0]",
+					"strict" : false
+				},
+				{
+					"name" : "display[1]",
+					"strict" : false
+				},
+				{
+					"name" : "display[2]",
+					"strict" : false
+				},
+				{
+					"name" : "display[3]",
+					"strict" : false
+				},
+				{
+					"name" : "display[4]",
+					"strict" : false
+				},
+				{
+					"name" : "display[5]",
+					"strict" : false
+				},
+				{
+					"name" : "display[6]",
+					"strict" : false
+				},
+				{
+					"name" : "display[7]",
+					"strict" : false
+				},
+				{
+					"name" : "locked",
+					"strict" : false
+				},
+				{
+					"name" : "mini_statement[0]",
+					"strict" : false
+				},
+				{
+					"name" : "mini_statement[1]",
+					"strict" : false
+				},
+				{
+					"name" : "mini_statement[2]",
+					"strict" : false
+				},
+				{
+					"name" : "mini_statement[3]",
+					"strict" : false
+				},
+				{
+					"name" : "mini_statement[4]",
+					"strict" : false
+				},
+				{
+					"name" : "mini_statement[5]",
+					"strict" : false
+				},
+				{
+					"name" : "mini_statement[6]",
+					"strict" : false
+				},
+				{
+					"name" : "mini_statement[7]",
+					"strict" : false
+				},
+				{
+					"name" : "clk",
+					"strict" : false
+				},
+				{
+					"name" : "keypad[2]",
+					"strict" : false
+				},
+				{
+					"name" : "keypad[3]",
+					"strict" : false
+				},
+				{
+					"name" : "keypad[0]",
+					"strict" : false
+				},
+				{
+					"name" : "keypad[1]",
+					"strict" : false
+				},
+				{
+					"name" : "deposit_amount[0]",
+					"strict" : false
+				},
+				{
+					"name" : "deposit_amount[1]",
+					"strict" : false
+				},
+				{
+					"name" : "deposit_amount[2]",
+					"strict" : false
+				},
+				{
+					"name" : "deposit_amount[3]",
+					"strict" : false
+				},
+				{
+					"name" : "withdrawal_amount[0]",
+					"strict" : false
+				},
+				{
+					"name" : "withdrawal_amount[1]",
+					"strict" : false
+				},
+				{
+					"name" : "withdrawal_amount[2]",
+					"strict" : false
+				},
+				{
+					"name" : "withdrawal_amount[3]",
+					"strict" : false
+				},
+				{
+					"name" : "reset",
+					"strict" : false
+				},
+				{
+					"name" : "card_swipe[0]",
+					"strict" : false
+				},
+				{
+					"name" : "card_swipe[1]",
+					"strict" : false
+				},
+				{
+					"name" : "card_swipe[2]",
+					"strict" : false
+				},
+				{
+					"name" : "card_swipe[3]",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

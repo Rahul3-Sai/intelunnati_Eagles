@@ -1,0 +1,7 @@
+
+State Machine - |ATM_Machine|state
+Name state.LOCKED_STATE state.TRANSACTION_STATE state.PIN_ENTRY_STATE state.IDLE_STATE 
+state.IDLE_STATE 0 0 0 0 
+state.PIN_ENTRY_STATE 0 0 1 1 
+state.TRANSACTION_STATE 0 1 0 1 
+state.LOCKED_STATE 1 0 0 1 
