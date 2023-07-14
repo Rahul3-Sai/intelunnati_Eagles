@@ -1,0 +1,2 @@
+Info (10281): Verilog HDL Declaration information at ATM_Machine.v(22): object "withdrawal_limit" differs only in case from object "WITHDRAWAL_LIMIT" in the same scope File: E:/unnati_internship/ATM/ATM_Machine.v Line: 22
+Info (10281): Verilog HDL Declaration information at ATM_Machine.v(23): object "deposit_limit" differs only in case from object "DEPOSIT_LIMIT" in the same scope File: E:/unnati_internship/ATM/ATM_Machine.v Line: 23
