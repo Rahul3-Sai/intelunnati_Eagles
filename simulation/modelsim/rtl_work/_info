@@ -1,0 +1,56 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dE:/unnati_internship/ATM/simulation/modelsim
+vATM_Machine
+Z1 !s110 1689349594
+!i10b 1
+!s100 c:H`HboiIg<0z_hS>K?`F0
+IRLb?ck0fL[1VjfhkU3I6l0
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1687929980
+8E:/unnati_internship/ATM/ATM_Machine.v
+FE:/unnati_internship/ATM/ATM_Machine.v
+L0 1
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z4 !s108 1689349594.000000
+!s107 E:/unnati_internship/ATM/ATM_Machine.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+E:/unnati_internship/ATM|E:/unnati_internship/ATM/ATM_Machine.v|
+!i113 1
+Z5 o-vlog01compat -work work
+Z6 !s92 -vlog01compat -work work +incdir+E:/unnati_internship/ATM
+Z7 tCvgOpt 0
+n@a@t@m_@machine
+vATM_Machine_TB
+R1
+!i10b 1
+!s100 cI?JaobU[NWY]^Yag@=XP3
+IOdET0@7Y3?z:KBcH?Chl50
+R2
+R0
+w1687931050
+8E:/unnati_internship/ATM/ATM_Machine_TB.v
+FE:/unnati_internship/ATM/ATM_Machine_TB.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 E:/unnati_internship/ATM/ATM_Machine_TB.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+E:/unnati_internship/ATM|E:/unnati_internship/ATM/ATM_Machine_TB.v|
+!i113 1
+R5
+R6
+R7
+n@a@t@m_@machine_@t@b
